@@ -46,6 +46,7 @@ const Reducers = () => {
     const inputRef = useRef()
     const [ items, dispatch ] = useReducer(reducer, [])
     const [ code, dispatchCode ] = useReducer(codeReducer, [])
+    const keys = [1, 2, 3, 4, 5, 6]
 
     const handleSubmit = event => {
         event.preventDefault()
@@ -58,14 +59,13 @@ const Reducers = () => {
 
     return (
         <div>
-            <div>
-                <button onClick={() => dispatchCode({ type: 'append', number: 1 })}>1</button>
-                <button onClick={() => dispatchCode({ type: 'append', number: 2 })}>2</button>
-                <button onClick={() => dispatchCode({ type: 'append', number: 3 })}>3</button>
-                <button onClick={() => dispatchCode({ type: 'append', number: 4 })}>4</button>
-                <button onClick={() => dispatchCode({ type: 'append', number: 5 })}>5</button>
-                <button onClick={() => dispatchCode({ type: 'append', number: 6 })}>6</button>
-            </div>
+            <ul>
+                {keys.map((key) => (
+                    <KeyPad key={key}
+                            num={key}
+                            dispatch={dispatchCode} />
+                ))}
+            </ul>
             <div>
                 INPUT: {code.join('')}
             </div>
@@ -73,22 +73,20 @@ const Reducers = () => {
                 <button onClick={() => dispatchCode({ type: 'clear' })}>Clear</button>
             </div>
             <ShoppingList refProp={inputRef}
-                items={items}
-                submit={handleSubmit}
-                dispatch={dispatch} />
+                          items={items}
+                          submit={handleSubmit}
+                          dispatch={dispatch} />
         </div>
     )
 }
 
-/*
-const KeyPad = ({ num }) => {
+const KeyPad = ({ num, dispatch }) => {
     return (
-        <div>
-            <button onClick={() => dispatchCode({ type: 'append', number: num })}>{num}</button>      
-        </div>
+        <span>
+            <button onClick={() => dispatch({ type: 'append', number: num })}>{num}</button>      
+        </span>
     )
 }
-*/
 
 const ShoppingList = ({ refProp, items, submit, dispatch }) => {
     return (
